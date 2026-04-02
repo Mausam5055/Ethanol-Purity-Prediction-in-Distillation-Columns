@@ -55,7 +55,7 @@ project_folder/
 
 5. Run the app
 ```bash
-streamlit run main.py
+streamlit run app.py
 ```
 
 Open browser to `http://localhost:8501`
