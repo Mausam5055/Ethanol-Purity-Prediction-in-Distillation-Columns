@@ -87,32 +87,32 @@ The system accepts 7 readily-available operating parameters from DCS/SCADA syste
 ```mermaid
 graph TB
     subgraph INPUT["📥 User Input Layer"]
-        A["Pressure (P)"]
-        B["Temperature T1 (°C)"]
-        C["Reflux Flow L (kmol/hr)"]
-        D["Vapor Flow V (kmol/hr)"]
-        E["Distillate D (kmol/hr)"]
-        F["Bottoms B (kmol/hr)"]
-        G["Feed Flow F (kmol/hr)"]
+        A["Pressure P"]
+        B["Temperature T1"]
+        C["Reflux Flow L"]
+        D["Vapor Flow V"]
+        E["Distillate D"]
+        F["Bottoms B"]
+        G["Feed Flow F"]
     end
 
     subgraph ENGINE["⚙️ Feature Engineering Engine"]
         direction TB
-        H["Derived Ratios\n• Reflux Ratio (L/V)\n• Reboiler Intensity (V/F)\n• Condenser Load (L/F)\n• Feed Normalized\n• Distillate Withdrawal\n• Bottoms Withdrawal"]
-        I["Interaction Terms\n• Reflux × Temp_Top\n• Reflux × Temp_Diff\n• Reboiler × Temp_Bottom\n• Feed × Reflux\n• Feed × Reboiler"]
-        J["Efficiency Metrics\n• Column_Load\n• Separation_Duty\n• Column_Efficiency"]
-        K["Temperature Calc\n• Temp_Bottom = T1 + 20°C"]
+        H["Derived Ratios: Reflux, Reboiler, Condenser, Feed Norm, D/F, B/F"]
+        I["Interaction Terms: Reflux x Temp, Reboiler x Temp, Feed x Reflux"]
+        J["Efficiency: Column Load, Separation Duty, Column Efficiency"]
+        K["Temp Calc: T_bottom = T1 + 20C"]
     end
 
     subgraph MODEL["🧠 ML Prediction Layer"]
-        L["StandardScaler\n(Normalize 21 Features)"]
-        M["Random Forest / XGBoost\n(Best Model Auto-Selected)"]
+        L["StandardScaler — Normalize 21 Features"]
+        M["Random Forest / XGBoost — Best Auto-Selected"]
     end
 
     subgraph OUTPUT["📤 Output Layer"]
-        N["🟢 OPTIMAL (≥ 82%)"]
-        O["🟡 ACCEPTABLE (75–82%)"]
-        P["🔴 LOW PURITY (< 75%)"]
+        N["OPTIMAL: Purity >= 82%"]
+        O["ACCEPTABLE: Purity 75-82%"]
+        P["LOW PURITY: Below 75%"]
     end
 
     INPUT --> ENGINE
@@ -123,6 +123,22 @@ graph TB
     style ENGINE fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
     style MODEL fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
     style OUTPUT fill:#FCE4EC,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    style A fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style B fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style C fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style D fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style E fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style F fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style G fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style H fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style I fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style J fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style K fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style L fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+    style M fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+    style N fill:#FFCDD2,stroke:#C62828,color:#B71C1C
+    style O fill:#FFCDD2,stroke:#C62828,color:#B71C1C
+    style P fill:#FFCDD2,stroke:#C62828,color:#B71C1C
 ```
 
 ---
@@ -131,22 +147,22 @@ graph TB
 
 ```mermaid
 flowchart TD
-    subgraph PHASE1["📦 Phase 1 — Data Preparation"]
-        A["📂 Load Raw Dataset<br/>4,000+ experiments"] --> B["🧹 Clean Data<br/>Remove duplicates & nulls"]
-        B --> C["✂️ Remove Outliers<br/>Keep 1st–99th percentile"]
-        C --> D["⚙️ Engineer 21 Features<br/>Ratios, interactions, efficiency"]
-        D --> E["⚖️ Balance Dataset<br/>Undersample middle range to 40%"]
+    subgraph PHASE1["Phase 1: Data Preparation"]
+        A["Load Raw Dataset — 4000+ experiments"] --> B["Clean Data — Remove duplicates and nulls"]
+        B --> C["Remove Outliers — Keep 1st to 99th percentile"]
+        C --> D["Engineer 21 Features — Ratios, interactions, efficiency"]
+        D --> E["Balance Dataset — Undersample middle range to 40%"]
     end
 
-    subgraph PHASE2["🧠 Phase 2 — Model Development"]
-        F["✂️ Split Data<br/>Train 60% · Val 20% · Test 20%"] --> G["📏 Scale Features<br/>StandardScaler on train only"]
-        G --> H["🏋️ Train Models<br/>XGBoost + Random Forest"]
-        H --> I["🔁 5-Fold Cross-Validation<br/>Evaluate on training set"]
-        I --> J["🏆 Select Best Model<br/>Compare test R² scores"]
+    subgraph PHASE2["Phase 2: Model Development"]
+        F["Split Data — Train 60% Val 20% Test 20%"] --> G["Scale Features — StandardScaler on train only"]
+        G --> H["Train Models — XGBoost + Random Forest"]
+        H --> I["5-Fold Cross-Validation — Evaluate on training set"]
+        I --> J["Select Best Model — Compare test R2 scores"]
     end
 
-    subgraph PHASE3["🚀 Phase 3 — Deployment"]
-        K["💾 Export Artifacts<br/>model.pkl · scaler.pkl · features_names.pkl"] --> L["🖥️ Streamlit App<br/>Real-time prediction dashboard"]
+    subgraph PHASE3["Phase 3: Deployment"]
+        K["Export Artifacts — model.pkl, scaler.pkl, features_names.pkl"] --> L["Streamlit App — Real-time prediction dashboard"]
     end
 
     PHASE1 --> PHASE2
@@ -155,6 +171,18 @@ flowchart TD
     style PHASE1 fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
     style PHASE2 fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
     style PHASE3 fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style A fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style B fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style C fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style D fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style E fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    style F fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style G fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style H fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style I fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style J fill:#FFE0B2,stroke:#E65100,color:#BF360C
+    style K fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+    style L fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
 ```
 
 ---
@@ -163,46 +191,46 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    START(["🌐 User Opens App<br/>localhost:8501"]) --> LOAD{"🔍 Model Files<br/>Found?"}
+    START(["User Opens App at localhost:8501"]) --> LOAD{"Model Files Found?"}
 
-    LOAD -- "❌ No" --> ERR["🚨 Display Error<br/>Missing .pkl files"]
-    ERR --> STOP(["⛔ App Stops"])
+    LOAD -- "No" --> ERR["Display Error: Missing pkl files"]
+    ERR --> STOP(["App Stops"])
 
-    LOAD -- "✅ Yes" --> INPUT["📥 Enter 7 Parameters<br/>P, T1, L, V, D, B, F"]
-    INPUT --> CALC["⚙️ Auto-Calculate<br/>14 Derived Features"]
-    CALC --> METRICS["📊 Display Live Metrics<br/>Reflux Ratio · Reboiler · Condenser"]
-    METRICS --> BTN{"🔮 User Clicks<br/>Run Simulation?"}
+    LOAD -- "Yes" --> INPUT["Enter 7 Parameters: P, T1, L, V, D, B, F"]
+    INPUT --> CALC["Auto-Calculate 14 Derived Features"]
+    CALC --> METRICS["Display Live Metrics: Reflux, Reboiler, Condenser"]
+    METRICS --> BTN{"User Clicks Run Simulation?"}
 
     BTN -- "Not yet" --> INPUT
 
-    BTN -- "Yes" --> SCALE["📏 Scale 21 Features<br/>Using fitted StandardScaler"]
-    SCALE --> PREDICT["🧠 Model Prediction<br/>Random Forest inference"]
-    PREDICT --> CHECK{"📈 Purity Value?"}
+    BTN -- "Yes" --> SCALE["Scale 21 Features with StandardScaler"]
+    SCALE --> PREDICT["Model Prediction: Random Forest inference"]
+    PREDICT --> CHECK{"Purity Value?"}
 
-    CHECK -- "≥ 82%" --> GREEN["🟢 OPTIMAL<br/>Maintain current settings"]
-    CHECK -- "75%–82%" --> YELLOW["🟡 ACCEPTABLE<br/>Monitor & consider adjustments"]
-    CHECK -- "< 75%" --> RED["🔴 LOW PURITY<br/>Check reflux, temp & feed"]
+    CHECK -- "Above 82%" --> GREEN["OPTIMAL — Maintain current settings"]
+    CHECK -- "75% to 82%" --> YELLOW["ACCEPTABLE — Monitor and adjust"]
+    CHECK -- "Below 75%" --> RED["LOW PURITY — Check reflux, temp, feed"]
 
-    GREEN --> DISPLAY["🖥️ Show Result Card<br/>Purity % + Status + Color"]
+    GREEN --> DISPLAY["Show Result Card: Purity + Status + Color"]
     YELLOW --> DISPLAY
     RED --> DISPLAY
     DISPLAY --> INPUT
 
-    style START fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
-    style STOP fill:#FFEBEE,stroke:#C62828,stroke-width:2px
-    style ERR fill:#FFEBEE,stroke:#C62828,stroke-width:2px
-    style LOAD fill:#FFF9C4,stroke:#F57F17,stroke-width:2px
-    style INPUT fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
-    style CALC fill:#FFF3E0,stroke:#E65100,stroke-width:2px
-    style METRICS fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px
-    style BTN fill:#FFF9C4,stroke:#F57F17,stroke-width:2px
-    style SCALE fill:#E0F7FA,stroke:#00838F,stroke-width:2px
-    style PREDICT fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
-    style CHECK fill:#FFF9C4,stroke:#F57F17,stroke-width:2px
-    style GREEN fill:#C8E6C9,stroke:#1B5E20,stroke-width:2px
-    style YELLOW fill:#FFF9C4,stroke:#F57F17,stroke-width:2px
-    style RED fill:#FFCDD2,stroke:#B71C1C,stroke-width:2px
-    style DISPLAY fill:#E1F5FE,stroke:#0277BD,stroke-width:2px
+    style START fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style STOP fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    style ERR fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C
+    style LOAD fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    style INPUT fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    style CALC fill:#FFE0B2,stroke:#E65100,stroke-width:2px,color:#BF360C
+    style METRICS fill:#E1BEE7,stroke:#7B1FA2,stroke-width:2px,color:#4A148C
+    style BTN fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    style SCALE fill:#B2EBF2,stroke:#00838F,stroke-width:2px,color:#006064
+    style PREDICT fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    style CHECK fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    style GREEN fill:#C8E6C9,stroke:#1B5E20,stroke-width:2px,color:#1B5E20
+    style YELLOW fill:#FFF9C4,stroke:#F57F17,stroke-width:2px,color:#E65100
+    style RED fill:#FFCDD2,stroke:#B71C1C,stroke-width:2px,color:#B71C1C
+    style DISPLAY fill:#B3E5FC,stroke:#0277BD,stroke-width:2px,color:#01579B
 ```
 
 ---
