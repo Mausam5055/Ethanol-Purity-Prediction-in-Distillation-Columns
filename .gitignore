@@ -1,0 +1,15 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/
+
+# Environment variables
+.env
+
+# Build outputs
+dist/
+build/
+*.exe
