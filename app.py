@@ -1,7 +1,7 @@
 """
 DISTILLATION COLUMN ETHANOL PURITY PREDICTOR — REDESIGNED UI V2.0
 ================================================================================
-Author: Mr. Krishna Narayan Singh  |  Enhanced UI 
+Author: Mr. Krishna Narayan Singh  |  Enhanced UI by Claude
 Features: 21 Physics-Augmented Features | AI Chatbot | Modern Design
 ================================================================================
 """
@@ -221,18 +221,62 @@ div[data-testid="stMetricLabel"] { color: var(--muted) !important; font-size: .8
 
 /* ── Sidebar ── */
 section[data-testid="stSidebar"] {
-    background: var(--surface);
+    background: var(--surface) !important;
     border-right: 1px solid var(--border);
-    min-width: 290px !important;
-    max-width: 290px !important;
+    /* ✅ NO fixed min/max-width — lets Streamlit's collapse button work freely */
+}
+section[data-testid="stSidebar"] > div:first-child {
+    padding: 1.5rem 1rem 2rem;
 }
 section[data-testid="stSidebar"] .stMarkdown h3 {
     font-family: var(--mono);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--accent);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    margin-bottom: 6px;
 }
+
+/* Collapse/expand toggle button — make it visible & styled */
+button[data-testid="collapsedControl"],
+button[kind="header"] {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--accent) !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+
+/* ── Sidebar custom metric cards ── */
+.sb-metric {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.sb-metric .sb-val {
+    font-family: var(--mono);
+    font-size: 1.25rem;
+    color: var(--accent);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sb-metric .sb-lbl {
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-top: 2px;
+}
+.sb-metric-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 0;
+}
+.sb-metric-row .sb-metric { margin-bottom: 0; }
 
 /* ── Chatbot ── */
 .chat-wrap { max-height: 440px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 4px 0; }
@@ -307,15 +351,15 @@ summary { color: var(--text) !important; font-family: var(--mono) !important; fo
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 3. AI CHATBOT INTEGRATION  (Grok / OpenAI-compatible)
+# 3. AI CHATBOT INTEGRATION  (Groq / OpenAI-compatible)
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Helper to get env vars with sidebar fallback ──
 def _get_api_cfg():
     """Return (api_key, base_url, model_name) from env or session state."""
-    key   = os.getenv("GROK_API_KEY",    st.session_state.get("_api_key", ""))
-    url   = os.getenv("GROK_BASE_URL",   "https://api.x.ai/v1")
-    model = os.getenv("MODEL_NAME",      "grok-beta")
+    key   = os.getenv("GROQ_API_KEY",    st.session_state.get("_api_key", ""))
+    url   = os.getenv("GROQ_BASE_URL",   "https://api.groq.com/openai/v1")
+    model = os.getenv("MODEL_NAME",      "llama-3.3-70b-versatile")
     return key, url, model
 
 
@@ -345,7 +389,7 @@ Answer the user's question below based on this context."""
 def get_ai_response(user_message: str, params: dict, prediction: float | None,
                     history: list) -> str:
     """
-    Call Grok (or any OpenAI-compatible) API and return assistant reply.
+    Call Groq Cloud (or any OpenAI-compatible) API and return assistant reply.
     Falls back to a rule-based response if no API key is configured.
     """
     api_key, base_url, model_name = _get_api_cfg()
@@ -449,42 +493,76 @@ if "chat_input"    not in st.session_state: st.session_state.chat_input    = ""
 # 6. SIDEBAR
 # ─────────────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### ⚗️ EthanolIQ")
-    st.markdown("<span style='color:#7A8BA6;font-size:.78rem;'>Distillation Intelligence Platform</span>",
+
+    # Brand
+    st.markdown(
+        "<div style='padding:4px 0 16px'>"
+        "<div style='font-family:\"Space Mono\",monospace;font-size:1.1rem;"
+        "background:linear-gradient(135deg,#00D4AA,#3B8BEB);"
+        "-webkit-background-clip:text;-webkit-text-fill-color:transparent;"
+        "font-weight:700;letter-spacing:-0.5px'>⚗️ EthanolIQ</div>"
+        "<div style='font-size:0.72rem;color:#7A8BA6;margin-top:2px;"
+        "letter-spacing:0.06em;text-transform:uppercase'>"
+        "Distillation Intelligence Platform</div></div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown("<div style='height:1px;background:#2A3450;margin-bottom:16px'></div>",
                 unsafe_allow_html=True)
-    st.divider()
 
-    st.markdown("### 📊 Model Performance")
-    m1, m2 = st.columns(2)
-    m1.metric("R²",    "≥ 0.98")
-    m2.metric("RMSE",  "0.0155")
-    m1.metric("MAE",   "0.0122")
-    m2.metric("±Acc.", "1.55%")
+    # Model Performance — pure HTML cards (no st.metric, no truncation)
+    st.markdown(
+        "<div style='font-family:\"Space Mono\",monospace;font-size:0.72rem;color:#00D4AA;"
+        "letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px'>"
+        "📊 Model Performance</div>"
+        "<div class='sb-metric-row'>"
+        "<div class='sb-metric'><div class='sb-val'>≥&nbsp;0.98</div><div class='sb-lbl'>R² Score</div></div>"
+        "<div class='sb-metric'><div class='sb-val'>0.0155</div><div class='sb-lbl'>RMSE</div></div>"
+        "</div>"
+        "<div style='height:8px'></div>"
+        "<div class='sb-metric-row'>"
+        "<div class='sb-metric'><div class='sb-val'>0.0122</div><div class='sb-lbl'>MAE</div></div>"
+        "<div class='sb-metric'><div class='sb-val'>±1.55%</div><div class='sb-lbl'>Accuracy</div></div>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown("<div style='height:1px;background:#2A3450;margin:16px 0'></div>",
+                unsafe_allow_html=True)
 
-    st.divider()
-    st.markdown("### 💡 Quick Tips")
+    # Quick Tips
+    st.markdown(
+        "<div style='font-family:\"Space Mono\",monospace;font-size:0.72rem;color:#00D4AA;"
+        "letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px'>"
+        "💡 Quick Tips</div>",
+        unsafe_allow_html=True,
+    )
     tips = [
         ("🔼", "Higher reflux → Higher purity"),
-        ("⚖️", "D + B ≈ F (mass balance)"),
-        ("🌡️", "T1 near 78°C is ideal"),
-        ("🚫", "Flood risk if V > 1200"),
-        ("📐", "Keep reflux ratio 1.5–2.2"),
+        ("⚖️", "D + B ≈ F  (mass balance)"),
+        ("🌡️", "T1 near 78 °C is ideal"),
+        ("🚫", "Flood risk if V &gt; 1200"),
+        ("📐", "Reflux ratio: target 1.5–2.2"),
     ]
-    for icon, tip in tips:
-        st.markdown(f"<div style='font-size:.82rem;color:#7A8BA6;margin-bottom:6px'>{icon} {tip}</div>",
-                    unsafe_allow_html=True)
+    tips_html = "".join(
+        f"<div style='font-size:.81rem;color:#7A8BA6;margin-bottom:7px;"
+        f"display:flex;gap:8px;align-items:flex-start'>"
+        f"<span>{icon}</span><span>{tip}</span></div>"
+        for icon, tip in tips
+    )
+    st.markdown(tips_html, unsafe_allow_html=True)
+    st.markdown("<div style='height:1px;background:#2A3450;margin:16px 0'></div>",
+                unsafe_allow_html=True)
 
-    st.divider()
-
-    # Optional: API key input for Grok (if not set via .env)
+    # AI Config expander
     with st.expander("🔑 AI Assistant Config"):
-        api_key_input = st.text_input("Grok / OpenAI API Key",
-                                      value=st.session_state.get("_api_key", ""),
-                                      type="password",
-                                      help="Set GROK_API_KEY in .env or paste here")
+        api_key_input = st.text_input(
+            "Groq / OpenAI API Key",
+            value=st.session_state.get("_api_key", ""),
+            type="password",
+            help="Set GROQ_API_KEY in .env or paste here",
+        )
         if api_key_input:
             st.session_state["_api_key"] = api_key_input
-        st.caption("Without a key, DistilBot uses built-in rule-based responses.")
+        st.caption("Without a key, DistilBot uses rule-based responses.")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -809,10 +887,10 @@ with info_col:
     """, unsafe_allow_html=True)
     api_key, *_ = _get_api_cfg()
     if api_key:
-        st.success("🟢 Live AI connected (Grok API)")
+        st.success("🟢 Live AI connected (Groq Cloud ✓)")
     else:
         st.info("🔵 Rule-based mode (no API key)")
-        st.caption("Add GROK_API_KEY to .env or use the sidebar to enable live AI.")
+        st.caption("Add GROQ_API_KEY to .env or use the sidebar to enable live AI.")
     st.markdown("</div>", unsafe_allow_html=True)
 
 
