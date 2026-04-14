@@ -1,0 +1,1445 @@
+\documentclass[12pt,a4paper]{report}
+
+%% ─── PACKAGES ────────────────────────────────────────────────────────────────
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{fontenc}
+\usepackage{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{tocloft}
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds,
+                calc, decorations.pathreplacing, shadows, matrix, chains}
+\usepackage{mdframed}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{parskip}
+\usepackage{emptypage}
+\usepackage{afterpage}
+
+%% ─── COLOURS ─────────────────────────────────────────────────────────────────
+\definecolor{vitblue}{RGB}{0,51,102}
+\definecolor{vitgold}{RGB}{180,130,0}
+\definecolor{accentblue}{RGB}{30,100,180}
+\definecolor{lightblue}{RGB}{220,235,250}
+\definecolor{darkgray}{RGB}{60,60,60}
+\definecolor{midgray}{RGB}{120,120,120}
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{inputcol}{RGB}{13,71,161}
+\definecolor{enginecol}{RGB}{180,71,0}
+\definecolor{mlcol}{RGB}{27,94,32}
+\definecolor{aicol}{RGB}{49,27,146}
+\definecolor{outputcol}{RGB}{183,28,28}
+\definecolor{tabheader}{RGB}{0,51,102}
+
+%% ─── HYPERREF SETUP ──────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks  = true,
+  linkcolor   = vitblue,
+  urlcolor    = accentblue,
+  citecolor   = accentblue,
+  pdftitle    = {Distillation Column AI},
+  pdfauthor   = {VIT Bhopal University},
+}
+
+%% ─── TYPOGRAPHY ──────────────────────────────────────────────────────────────
+\setstretch{1.4}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+%% ─── CHAPTER / SECTION STYLES ────────────────────────────────────────────────
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries\color{vitblue}}
+  {\chaptertitlename\ \thechapter}{10pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{20pt}{30pt}
+
+\titleformat{\section}{\large\bfseries\color{vitblue}}{{\thesection}}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{accentblue}}{{\thesubsection}}{1em}{}
+\titleformat{\subsubsection}{\normalsize\itshape\color{darkgray}}{{\thesubsubsection}}{1em}{}
+
+%% ─── HEADER / FOOTER ─────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Distillation Column AI Report}}
+\fancyhead[R]{\small\textit{B.Tech Project Exhibition 2024--2025}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%% ─── TABLE STYLES ────────────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+%% ─── TABLE HEADER COMMAND ────────────────────────────────────────────────────
+\newcommand{\thead}[1]{%
+  \cellcolor{tabheader}\textcolor{white}{\textbf{#1}}%
+}
+
+%% ─── STYLED BOX ──────────────────────────────────────────────────────────────
+\newmdenv[
+  linecolor=vitblue,
+  linewidth=1.5pt,
+  backgroundcolor=lightblue,
+  innerleftmargin=10pt,
+  innerrightmargin=10pt,
+  innertopmargin=8pt,
+  innerbottommargin=8pt,
+  roundcorner=4pt,
+]{infobox}
+
+%% ─── CODE LISTING ────────────────────────────────────────────────────────────
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{midgray},
+  numbers=left,
+  numberstyle=\tiny\color{midgray},
+}
+
+%% ─── TOC FORMATTING ──────────────────────────────────────────────────────────
+\renewcommand{\cftchapfont}{\bfseries}
+\renewcommand{\cftsecfont}{}
+\setlength{\cftbeforechapskip}{4pt}
+
+%%═══════════════════════════════════════════════════════════════════════════════
+%%  DOCUMENT
+%%═══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+\pagenumbering{roman}
+
+%% ─── TITLE PAGE ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+\begin{center}
+
+\vspace*{0.5cm}
+{\LARGE\bfseries Distillation Column AI}\\[6pt]
+{\large Intelligent Prediction $\cdot$ Explainable Diagnostics $\cdot$ Real-Time Optimization}
+
+\vspace{1.2cm}
+{\Large\bfseries A Project Report}
+
+\vspace{0.8cm}
+{\large\itshape Submitted By:}\\[6pt]
+{\large
+Mausam Kar (24BAI10248)\\
+Poorna Gupta (24BAI10091)\\
+Krishna Narayan Singh (24BAI10230)\\
+MD Tanzeel Khan (24BAI10359)\\
+Raj Kumar Mahto (24BAI10167)\\
+Nalawde Ashlesh Kumar (24BAI10407)\\
+}
+
+\vspace{0.8cm}
+{\itshape In partial fulfillment for the award of the degree of}
+
+\vspace{0.4cm}
+{\large\bfseries BACHELOR OF TECHNOLOGY}\\[4pt]
+{\normalsize in}\\[4pt]
+{\large\bfseries COMPUTER SCIENCE AND ENGINEERING}\\[4pt]
+{\large\bfseries (ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)}
+
+\vspace{0.8cm}
+%% ── Logo placeholder (TikZ drawn VIT logo) ───────────────────────────────────
+\begin{tikzpicture}
+  \draw[vitblue, line width=2pt] (0,0) circle (1.2cm);
+  \node[vitblue, font=\bfseries\large] at (0,0.3) {VIT};
+  \node[vitblue, font=\bfseries\normalsize] at (0,-0.3) {BHOPAL};
+\end{tikzpicture}
+
+\vspace{0.6cm}
+{\large\bfseries SCHOOL OF COMPUTING SCIENCE ENGINEERING AND ARTIFICIAL\\[2pt]
+INTELLIGENCE}
+
+\vspace{0.4cm}
+{\bfseries
+VIT BHOPAL UNIVERSITY\\
+KOTHRIKALAN, SEHORE\\
+MADHYA PRADESH -- 466114
+}
+
+\vspace{0.5cm}
+{\large September 2025}
+
+\end{center}
+\end{titlepage}
+
+%% ─── CERTIFICATE ─────────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+{\bfseries\large VIT BHOPAL UNIVERSITY,}\\
+{\bfseries\large KOTHRIKALAN, SEHORE}\\
+{\bfseries\large MADHYA PRADESH -- 466114}
+
+\vspace{1cm}
+{\Large\bfseries BONAFIDE CERTIFICATE}
+\end{center}
+
+\vspace{0.6cm}
+Certified that this project report titled \textbf{``Distillation Column AI: Intelligent
+Prediction, Explainable Diagnostics and Real-Time Optimization''} is the bonafide work
+of \textbf{Mausam Kar (24BAI10248), Poorna Gupta (24BAI10091), Krishna Narayan
+Singh (24BAI10230), Md Tanzeel Khan (24BAI10359), Raj Kumar Mahto (24BAI10167),
+Nalawde Ashlesh Kumar (24BAI10407)} who carried out the project work under my
+supervision. Certified further that to the best of my knowledge the work reported at this
+time does not form part of any other project/research work based on which a degree or
+award was conferred on an earlier occasion on this or any other candidate.
+
+\vspace{1.5cm}
+\begin{tabular}{p{7cm}p{7cm}}
+\textbf{PROGRAM CHAIR} & \textbf{PROJECT GUIDE} \\[10pt]
+Dr.\ Siddharth Singh Chouhan & Dr.\ Trapti Sharma \\
+School of Computing Science & School of Computing Science \\
+Engineering and Artificial & Engineering and Artificial \\
+Intelligence & Intelligence \\
+VIT BHOPAL UNIVERSITY & VIT BHOPAL UNIVERSITY \\
+\end{tabular}
+
+\vspace{1.5cm}
+The Project Exhibition I Examination is held on: \textbf{25/09/2025}
+
+%% ─── ACKNOWLEDGEMENT ─────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{plain}
+\begin{center}
+{\Large\bfseries ACKNOWLEDGEMENT}
+\end{center}
+\vspace{0.6cm}
+
+First and foremost we would like to thank the Lord Almighty for His presence and
+immense blessings throughout the project work.
+
+We wish to express our heartfelt gratitude to \textbf{Dr.\ Siddharth Singh Chouhan},
+Head of the Department, School of Computing Science Engineering and Artificial
+Intelligence, for his valuable support and encouragement in carrying out this work.
+
+We would like to thank our internal guide \textbf{Dr.\ Trapti Sharma}, for continually
+guiding and actively participating in the project, giving valuable suggestions throughout
+to complete the project work successfully.
+
+We extend our thanks to all the technical and teaching staff of the School of Computing
+Science Engineering and Artificial Intelligence, who extended directly or indirectly all
+possible support.
+
+Last but not least, we are deeply indebted to our parents who have been the greatest
+support while we worked day and night for the project to make it a success.
+
+%% ─── ABBREVIATIONS ───────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{plain}
+\begin{center}
+{\Large\bfseries LIST OF ABBREVIATIONS}
+\end{center}
+\vspace{0.4cm}
+
+\begin{longtable}{|L{4cm}|L{10cm}|}
+\hline
+\thead{Abbreviation} & \thead{Description} \\
+\hline
+\endfirsthead
+\hline
+\thead{Abbreviation} & \thead{Description} \\
+\hline
+\endhead
+\hline
+\endfoot
+AI       & Artificial Intelligence \\
+ML       & Machine Learning \\
+RF       & Random Forest \\
+XGB      & XGBoost (Extreme Gradient Boosting) \\
+SHAP     & SHapley Additive exPlanations \\
+NLP      & Natural Language Processing \\
+LLM      & Large Language Model \\
+API      & Application Programming Interface \\
+R\textsuperscript{2}        & Coefficient of Determination (R-squared) \\
+RMSE     & Root Mean Square Error \\
+MAE      & Mean Absolute Error \\
+CV       & Cross-Validation \\
+PCA      & Principal Component Analysis \\
+DCS      & Distributed Control System \\
+SCADA    & Supervisory Control and Data Acquisition \\
+OPC-UA   & Open Platform Communications Unified Architecture \\
+REST     & Representational State Transfer \\
+GPU      & Graphics Processing Unit \\
+CSV      & Comma-Separated Values \\
+UI       & User Interface \\
+UX       & User Experience \\
+VLE      & Vapour-Liquid Equilibrium \\
+\end{longtable}
+
+%% ─── LIST OF TABLES ──────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{plain}
+\begin{center}
+{\Large\bfseries LIST OF TABLES}
+\end{center}
+\vspace{0.4cm}
+
+\begin{longtable}{|C{2cm}|L{10cm}|C{2cm}|}
+\hline
+\thead{Table No.} & \thead{Title} & \thead{Page No.} \\
+\hline
+\endfirsthead
+\hline
+\thead{Table No.} & \thead{Title} & \thead{Page No.} \\
+\hline
+\endhead
+\hline
+\endfoot
+1.1  & AI Capabilities at a Glance          & \pageref{tab:capabilities} \\
+1.2  & Technology Stack Overview             & \pageref{tab:techstack} \\
+2.1  & System Architecture Layers            & \pageref{tab:archlayers} \\
+3.1  & Input Parameters Description          & \pageref{tab:inputparams} \\
+3.2  & Engineered Feature Set (21 Features)  & \pageref{tab:features} \\
+4.1  & Model Hyperparameters -- Random Forest & \pageref{tab:rf_params} \\
+4.2  & Model Hyperparameters -- XGBoost      & \pageref{tab:xgb_params} \\
+4.3  & Model Performance Metrics             & \pageref{tab:metrics} \\
+4.4  & Training Pipeline Steps               & \pageref{tab:trainpipeline} \\
+5.1  & SHAP Feature Attribution Summary      & \pageref{tab:shap} \\
+5.2  & Anomaly Detection Layers              & \pageref{tab:anomaly} \\
+6.1  & Optimization Recommendation Examples  & \pageref{tab:optim} \\
+7.1  & Development Roadmap                   & \pageref{tab:roadmap} \\
+7.2  & Contribution Areas                    & \pageref{tab:contrib} \\
+\end{longtable}
+
+%% ─── LIST OF FIGURES ─────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{plain}
+\begin{center}
+{\Large\bfseries LIST OF FIGURES}
+\end{center}
+\vspace{0.4cm}
+
+\begin{longtable}{|C{2cm}|L{10cm}|C{2cm}|}
+\hline
+\thead{Fig No.} & \thead{Title} & \thead{Page No.} \\
+\hline
+\endfirsthead
+\hline
+\thead{Fig No.} & \thead{Title} & \thead{Page No.} \\
+\hline
+\endhead
+\hline
+\endfoot
+2.1 & High-Level System Architecture Diagram     & \pageref{fig:highlevel} \\
+2.2 & AI Intelligence Pipeline Flowchart          & \pageref{fig:pipeline} \\
+2.3 & Backend Architecture Layers                 & \pageref{fig:backend} \\
+2.4 & Data Flow Pattern                           & \pageref{fig:dataflow} \\
+3.1 & Feature Engineering Process                 & \pageref{fig:featureeng} \\
+4.1 & Model Training Workflow                     & \pageref{fig:training} \\
+5.1 & SHAP Explainability Flow                    & \pageref{fig:shap} \\
+5.2 & Anomaly Detection Architecture              & \pageref{fig:anomaly} \\
+6.1 & Prediction and Optimization Workflow        & \pageref{fig:optflow} \\
+6.2 & Conversational AI Chat Flow                 & \pageref{fig:chatflow} \\
+\end{longtable}
+
+%% ─── ABSTRACT ────────────────────────────────────────────────────────────────
+\clearpage
+\thispagestyle{plain}
+\begin{center}
+{\Large\bfseries ABSTRACT}
+\end{center}
+\vspace{0.4cm}
+
+\textbf{[PURPOSE -- METHODOLOGY -- FINDINGS]}
+
+Distillation Column AI is a full-stack intelligent platform for predicting, analysing,
+and optimising ethanol purity in industrial distillation columns. The platform addresses
+the long-standing challenges of traditional trial-and-error tuning in chemical process
+engineering by integrating physics-informed machine learning with Google Gemini's
+large language model capabilities into a unified, operator-facing dashboard.
+
+The methodology follows a three-layer architecture: a \emph{Prediction Layer} employing
+a physics-augmented Random Forest and XGBoost ensemble trained on more than 4{,}000
+real distillation experiments; an \emph{Intelligence Layer} that invokes Google Gemini
+Pro to generate plain-English diagnostics, interpret SHAP attributions, flag anomalies
+in real time, and recommend optimisation actions; and an \emph{Interaction Layer}
+providing a conversational AI copilot that responds to natural-language operator queries
+in context-aware fashion.
+
+Feature engineering transforms seven raw sensor inputs — pressure, temperature,
+reflux flow, vapour flow, distillate flow, bottoms flow, and feed flow — into
+21 physics-derived features encompassing derived ratios, interaction terms, efficiency
+metrics, and thermodynamic approximations. A StandardScaler normalises these features
+before inference. The best-performing model (auto-selected by test R\textsuperscript{2})
+achieves R\textsuperscript{2}~$>$~0.98, RMSE~0.0155, and MAE~0.0122, corresponding
+to a prediction error margin of $\pm$1.55\%.
+
+Key findings demonstrate that the platform successfully delivers real-time purity
+predictions within 50\,ms, meaningful natural-language diagnostics without manual
+interpretation effort, SHAP-based per-prediction explainability, multi-layer anomaly
+detection combining Isolation Forest with domain physics rules, a what-if simulator
+enabling virtual parameter testing, and an inverse target-purity solver. The modular
+architecture supports future extensions including time-series trend analysis,
+multi-column dashboards, and OPC-UA integration with live DCS data streams.
+
+%% ─── TABLE OF CONTENTS ───────────────────────────────────────────────────────
+\clearpage
+{\pagestyle{plain}
+\tableofcontents
+\clearpage}
+
+%%═══════════════════════════════════════════════════════════════════════════════
+%% MAIN MATTER
+%%═══════════════════════════════════════════════════════════════════════════════
+\pagenumbering{arabic}
+\pagestyle{fancy}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{Introduction}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Project Overview}
+
+Distillation Column AI is a modern, full-stack intelligent platform built to predict,
+diagnose, and optimise ethanol purity in industrial distillation columns. Operating far
+beyond a conventional prediction tool, the platform acts as an \emph{AI copilot}
+for chemical process engineers by combining physics-informed machine learning with
+Google Gemini Pro's conversational reasoning capabilities — all surfaced through a
+single Streamlit dashboard.
+
+Industrial distillation is a high-stakes, energy-intensive process. Even small
+deviations in operating parameters — reflux ratio, vapour flow, feed conditions —
+propagate non-linearly into product purity. Traditional approaches rely on first-principles
+simulation or operator intuition, both of which are slow to adapt and difficult to
+explain. Distillation Column AI replaces this gap with an always-on AI layer that not
+only predicts outcomes but explains \emph{why} a given prediction was made and
+recommends the exact corrective action.
+
+The platform operates on three interconnected layers, each addressing a distinct aspect
+of the problem:
+
+\begin{itemize}[leftmargin=1.5cm]
+  \item \textbf{Prediction Layer:} A physics-informed Random Forest model trained on
+  4{,}000+ real distillation experiments, transforming 7 raw sensor inputs into
+  21 engineered features to predict ethanol mole fraction with R\textsuperscript{2}~$>$~0.98.
+
+  \item \textbf{Intelligence Layer:} Google Gemini AI interprets every prediction in
+  plain English, explains each decision using SHAP values, detects anomalies in
+  real-time, and suggests concrete optimisation actions.
+
+  \item \textbf{Interaction Layer:} A conversational AI assistant enabling operators
+  to ask questions like \textit{``Why did purity drop?''} or \textit{``What should
+  I adjust to reach 92\%?''} and receive instant, context-aware answers.
+\end{itemize}
+
+\section{Project Objectives}
+
+The primary objectives of Distillation Column AI are:
+
+\begin{enumerate}[leftmargin=1.8cm]
+  \item \textbf{Accurate Prediction:} Deliver real-time ethanol purity predictions
+  with sub-2\% error from live sensor readings using an ensemble of physics-informed
+  ML models.
+
+  \item \textbf{Explainability:} Provide per-prediction SHAP attribution so engineers
+  understand which operating variable contributes most to the predicted outcome,
+  building trust in AI recommendations.
+
+  \item \textbf{Natural Language Diagnostics:} Generate plain-English diagnostic
+  reports via Google Gemini Pro that contextualise predictions without requiring
+  statistical literacy.
+
+  \item \textbf{Anomaly Detection:} Identify sensor drift, mass-balance violations,
+  and out-of-distribution inputs in real time using a multi-layer detection framework.
+
+  \item \textbf{Optimisation Assistance:} Suggest actionable parameter adjustments —
+  quantified in engineering units — to achieve target purity levels or improve
+  energy efficiency.
+
+  \item \textbf{Operator Empowerment:} Lower the barrier to AI adoption in process
+  plants by surfacing all intelligence through a conversational, non-technical
+  interface.
+\end{enumerate}
+
+\section{Target Users}
+
+The platform is designed for two primary audiences. \textbf{Process engineers} use it
+to monitor column performance in real time, validate operating conditions, and act on
+AI-generated optimisation recommendations without deep data-science knowledge.
+\textbf{Research scientists and students} use it to explore the physics of distillation
+through what-if simulations, SHAP-driven feature importance analysis, and batch
+comparison of historical operating snapshots.
+
+\section{Key Features}
+
+Table~\ref{tab:capabilities} summarises the twelve core AI capabilities delivered by
+the platform.
+
+\begin{table}[H]
+\centering
+\caption{AI Capabilities at a Glance}
+\label{tab:capabilities}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|C{0.5cm}|L{4.2cm}|C{2.5cm}|L{6.8cm}|}
+\hline
+\thead{\#} & \thead{Capability} & \thead{Powered By} & \thead{Description} \\
+\hline
+1  & Real-Time Purity Prediction     & RF / XGBoost          & Predicts ethanol mole fraction from 7 operating parameters in under 50\,ms \\
+2  & Natural Language Diagnostics    & Google Gemini Pro     & Writes a plain-English report explaining the prediction and its causes \\
+3  & SHAP Explainability             & SHAP Library          & Per-prediction waterfall chart showing each feature's contribution \\
+4  & Anomaly Detection               & Isolation Forest      & Flags sensor drift, mass-balance violations, and out-of-range inputs \\
+5  & Smart Alerts                    & Gemini + Statistics   & Context-aware warnings with specific remediation instructions \\
+6  & What-If Simulator               & Model + Gemini        & Virtual parameter changes to see predicted impact before acting \\
+7  & Optimisation Advisor            & Gemini + Sensitivity  & Actionable recommendations with quantified adjustments \\
+8  & Target Purity Solver            & Inverse Model         & Specify desired purity and receive recommended operating conditions \\
+9  & Energy Efficiency Advisor       & Gemini + Domain Rules & Balances purity targets against steam and energy consumption \\
+10 & Conversational AI Chat          & Gemini Chat API       & Natural-language Q\&A about any aspect of column behaviour \\
+11 & Trend Analysis                  & Time-Series Engine    & Identifies gradual degradation patterns across sequential predictions \\
+12 & Batch Analysis                  & Parallel Inference    & Upload multiple snapshots and receive comparative AI analysis \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Technology Stack}
+\label{sec:techstack}
+
+The platform is built on a modern, open-source Python ecosystem. Table~\ref{tab:techstack}
+lists each technology and its role.
+
+\begin{table}[H]
+\centering
+\caption{Technology Stack Overview}
+\label{tab:techstack}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|L{3.2cm}|L{3.5cm}|L{7.3cm}|}
+\hline
+\thead{Category} & \thead{Technology} & \thead{Purpose} \\
+\hline
+Language           & Python 3.8+           & Core programming language \\
+Web Framework      & Streamlit             & Interactive AI dashboard UI \\
+AI / LLM           & Google Gemini Pro API & Natural-language diagnostics, conversational AI, and report generation \\
+Explainability     & SHAP                  & Per-prediction feature attribution — waterfall, force, and summary plots \\
+ML Models          & scikit-learn, XGBoost & Random Forest \& XGBoost training, inference, and cross-validation \\
+Anomaly Detection  & scikit-learn, scipy   & Isolation Forest and statistical bounds for multi-layer detection \\
+Data Processing    & pandas, NumPy         & Data manipulation, feature engineering, and numerical computation \\
+Visualisation      & Matplotlib, Plotly    & Feature importance charts, SHAP plots, interactive what-if graphs \\
+Serialisation      & pickle                & Model, scaler, and feature-name persistence \\
+Environment Mgmt   & python-dotenv         & Secure API key management \\
+Training Env       & Google Colab          & Cloud-based model training with GPU acceleration \\
+Deployment         & GitHub Codespaces     & Cloud development via devcontainer \\
+\hline
+\end{tabularx}
+\end{table}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{System Architecture}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Architecture Overview}
+
+Distillation Column AI follows a layered, service-oriented architecture in which raw
+sensor data flows upward through increasingly intelligent processing stages before
+delivering actionable output to the operator. The design decouples the physics-based
+feature engineering pipeline from the ML inference layer, and both from the Gemini
+AI intelligence layer, enabling each component to evolve independently.
+
+The overall system is structured around five horizontally separated zones — Input,
+Physics Feature Engine, ML Prediction, AI Intelligence, and Output — with Google
+Gemini's API acting as the cross-cutting intelligence fabric that links prediction
+results to human-readable insight.
+
+\begin{table}[H]
+\centering
+\caption{System Architecture Layers}
+\label{tab:archlayers}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|L{3.2cm}|L{4cm}|L{7cm}|}
+\hline
+\thead{Layer} & \thead{Components} & \thead{Responsibility} \\
+\hline
+Operator Input  & 7 sensor parameters                 & Accepts raw pressure, temperature, and flow readings from the column \\
+Feature Engine  & 21 engineered features              & Transforms raw inputs into physics-meaningful derived ratios and interaction terms \\
+ML Prediction   & Random Forest / XGBoost             & Produces purity prediction with confidence score in $<$50\,ms \\
+AI Intelligence & Gemini Pro, SHAP, Isolation Forest  & Generates diagnostics, explains predictions, detects anomalies, and recommends actions \\
+Output          & Dashboard, Chat, Reports            & Presents all results in operator-facing natural language and interactive charts \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{High-Level Architecture Diagram}
+\label{fig:highlevel}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.6cm and 1.2cm,
+  box/.style={rectangle, rounded corners=3pt, minimum width=2.8cm,
+              minimum height=0.8cm, align=center, font=\small\bfseries,
+              draw, thick},
+  inputbox/.style={box, fill=blue!12, draw=inputcol, text=inputcol},
+  enginebox/.style={box, fill=orange!12, draw=enginecol, text=enginecol, text width=4.5cm},
+  mlbox/.style={box, fill=green!12, draw=mlcol, text=mlcol},
+  aibox/.style={box, fill=violet!12, draw=aicol, text=aicol},
+  outbox/.style={box, fill=red!10, draw=outputcol, text=outputcol, text width=3.5cm},
+  arrow/.style={-Stealth, thick},
+]
+
+%% INPUT ROW
+\node[inputbox] (P)  at (0,0)    {Pressure P};
+\node[inputbox] (T)  [right=0.2cm of P] {Temperature T1};
+\node[inputbox] (L)  [right=0.2cm of T] {Reflux Flow L};
+\node[inputbox] (V)  [right=0.2cm of L] {Vapour Flow V};
+\node[inputbox] (D)  [right=0.2cm of V] {Distillate D};
+\node[inputbox] (B)  [right=0.2cm of D] {Bottoms B};
+\node[inputbox] (F)  [right=0.2cm of B] {Feed Flow F};
+
+\begin{scope}[on background layer]
+  \node[draw=inputcol, fill=blue!5, rounded corners=5pt,
+        fit=(P)(F), inner sep=6pt, label=above:{\color{inputcol}\small\bfseries Operator Input Layer}] (inputgrp) {};
+\end{scope}
+
+%% ENGINE ROW
+\node[enginebox, below=1.2cm of $(P)!0.5!(F)$] (eng1)
+      {Derived Ratios (Reflux, D/F, B/F, Reboiler, Condenser, Feed Norm)};
+\node[enginebox, right=0.4cm of eng1] (eng2)
+      {Interaction Terms (Reflux$\times$Temp, Feed$\times$Reflux)};
+\node[enginebox, right=0.4cm of eng2] (eng3)
+      {Efficiency Metrics \& Thermo Approximations};
+
+\begin{scope}[on background layer]
+  \node[draw=enginecol, fill=orange!5, rounded corners=5pt,
+        fit=(eng1)(eng3), inner sep=6pt,
+        label=above:{\color{enginecol}\small\bfseries Physics Feature Engine --- 21 Features}] (enggrp) {};
+\end{scope}
+
+%% ML ROW
+\node[mlbox, minimum width=3.5cm, below=1.2cm of $(eng1)!0.5!(eng3)$] (scaler)
+      {StandardScaler (Normalise 21 Features)};
+\node[mlbox, minimum width=4.5cm, right=0.6cm of scaler] (mlmodel)
+      {Random Forest / XGBoost (Auto-Selected)};
+
+\begin{scope}[on background layer]
+  \node[draw=mlcol, fill=green!5, rounded corners=5pt,
+        fit=(scaler)(mlmodel), inner sep=6pt,
+        label=above:{\color{mlcol}\small\bfseries ML Prediction Layer}] (mlgrp) {};
+\end{scope}
+
+%% AI ROW
+\node[aibox, minimum width=2.8cm, below=1.2cm of $(scaler)!0.5!(mlmodel)$]
+      (gemini) {Gemini NLP\\Diagnostic Engine};
+\node[aibox, minimum width=2.8cm, right=0.4cm of gemini] (shapai)
+      {SHAP Engine\\Attribution};
+\node[aibox, minimum width=2.8cm, right=0.4cm of shapai] (anomai)
+      {Anomaly Detector};
+\node[aibox, minimum width=2.8cm, right=0.4cm of anomai] (optai)
+      {Optimisation\\Advisor};
+\node[aibox, minimum width=2.8cm, right=0.4cm of optai] (chatai)
+      {Conversational\\AI Chat};
+
+\begin{scope}[on background layer]
+  \node[draw=aicol, fill=violet!5, rounded corners=5pt,
+        fit=(gemini)(chatai), inner sep=6pt,
+        label=above:{\color{aicol}\small\bfseries AI Intelligence Layer (Gemini Core)}] (aigrp) {};
+\end{scope}
+
+%% OUTPUT ROW
+\node[outbox, below=1.2cm of $(gemini)!0.5!(chatai)$] (out1)
+      {Purity Prediction + Confidence};
+\node[outbox, right=0.4cm of out1] (out2)
+      {AI Diagnostic Report};
+\node[outbox, right=0.4cm of out2] (out3)
+      {Anomaly Alerts \& Recommendations};
+
+\begin{scope}[on background layer]
+  \node[draw=outputcol, fill=red!5, rounded corners=5pt,
+        fit=(out1)(out3), inner sep=6pt,
+        label=above:{\color{outputcol}\small\bfseries Intelligent Output Layer}] (outgrp) {};
+\end{scope}
+
+%% ARROWS between groups
+\draw[arrow, inputcol] (inputgrp.south) -- (enggrp.north);
+\draw[arrow, enginecol] (enggrp.south) -- (mlgrp.north);
+\draw[arrow, mlcol] (mlgrp.south) -- (aigrp.north);
+\draw[arrow, aicol] (aigrp.south) -- (outgrp.north);
+
+\end{tikzpicture}
+}
+\caption{High-Level System Architecture}
+\end{figure}
+
+\section{AI Intelligence Pipeline}
+\label{fig:pipeline}
+
+The AI intelligence pipeline describes how a single prediction request propagates from
+raw sensor input through feature engineering, ML inference, Gemini diagnostics, and
+finally into the operator-facing output layer.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  proc/.style={rectangle, rounded corners=4pt, minimum width=3.2cm,
+               minimum height=0.9cm, align=center, font=\small,
+               draw=vitblue, fill=lightblue, thick},
+  dec/.style={diamond, aspect=2.5, minimum width=3.2cm, minimum height=0.9cm,
+              align=center, font=\footnotesize, draw=vitgold,
+              fill=yellow!10, thick},
+  term/.style={rectangle, rounded corners=8pt, minimum width=3.2cm,
+               minimum height=0.9cm, align=center, font=\small\bfseries,
+               draw=mlcol, fill=green!10, thick},
+  arrow/.style={-Stealth, thick, vitblue},
+]
+
+\node[proc] (inp)  {Operator enters 7 sensor parameters};
+\node[proc, below=of inp] (feat)  {Physics Feature Engine: generate 21 features};
+\node[proc, below=of feat] (scale) {StandardScaler normalisation};
+\node[proc, below=of scale] (infer) {ML Inference (RF / XGBoost)};
+\node[dec,  below=0.6cm of infer] (anom)  {Anomaly\\detected?};
+\node[proc, below=0.7cm of anom] (shap)  {SHAP attribution computation};
+\node[proc, below=of shap] (gem)   {Gemini Pro: generate diagnostic report};
+\node[proc, below=of gem] (optim)  {Optimisation advisor + what-if analysis};
+\node[term, below=of optim] (dash)  {Render dashboard \& conversational chat};
+
+%% side branch for anomaly
+\node[proc, right=2.5cm of anom, text width=2.8cm] (alert)
+     {Generate Smart Alert + remediation advice};
+
+\draw[arrow] (inp)   -- (feat);
+\draw[arrow] (feat)  -- (scale);
+\draw[arrow] (scale) -- (infer);
+\draw[arrow] (infer) -- (anom);
+\draw[arrow] (anom)  -- node[left,font=\footnotesize]{No} (shap);
+\draw[arrow] (anom)  -- node[above,font=\footnotesize]{Yes} (alert);
+\draw[arrow] (alert) |- (shap);
+\draw[arrow] (shap)  -- (gem);
+\draw[arrow] (gem)   -- (optim);
+\draw[arrow] (optim) -- (dash);
+
+\end{tikzpicture}
+\caption{AI Intelligence Pipeline Flowchart}
+\end{figure}
+
+\section{Backend Architecture}
+\label{fig:backend}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  layer/.style={rectangle, draw=vitblue, fill=lightblue!60, rounded corners=3pt,
+                minimum width=11cm, minimum height=0.8cm, align=center,
+                font=\small\bfseries, thick},
+  comp/.style={rectangle, draw=accentblue, fill=white, rounded corners=2pt,
+               minimum width=2.6cm, minimum height=0.7cm, align=center,
+               font=\footnotesize, drop shadow},
+  arrow/.style={-Stealth, thick, vitblue},
+]
+\node[layer] (api)   at (0,0)    {Streamlit Application Layer (UI + API calls)};
+\node[layer] (mid)   at (0,-1.4) {Model Inference Middleware (model.pkl · scaler.pkl · features\_names.pkl)};
+\node[layer] (feat2) at (0,-2.8) {Physics Feature Engineering Module (21 features from 7 inputs)};
+\node[layer] (gemini2) at (0,-4.2) {Google Gemini Pro API Layer (Diagnostics · Chat · Optimisation)};
+\node[layer] (shap2) at (0,-5.6) {SHAP Explainability Engine (Waterfall · Force · Summary)};
+\node[layer] (anom2) at (0,-7.0) {Anomaly Detection Engine (Isolation Forest · Statistical Bounds · Physics Rules)};
+\node[layer] (data)  at (0,-8.4) {Data Layer (dataset\_distill.csv · pandas · NumPy)};
+
+\draw[arrow] (api)    -- (mid);
+\draw[arrow] (mid)    -- (feat2);
+\draw[arrow] (feat2)  -- (gemini2);
+\draw[arrow] (gemini2)-- (shap2);
+\draw[arrow] (shap2)  -- (anom2);
+\draw[arrow] (anom2)  -- (data);
+\end{tikzpicture}
+\caption{Backend Architecture Layers}
+\end{figure}
+
+\section{Data Flow Pattern}
+\label{fig:dataflow}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.4cm and 1.5cm,
+  box/.style={rectangle, rounded corners=3pt, minimum width=2.4cm,
+              minimum height=0.75cm, align=center, font=\small,
+              draw=vitblue, fill=lightblue, thick},
+  arrow/.style={-Stealth, thick, vitblue},
+  label/.style={font=\footnotesize\itshape, midway},
+]
+\node[box] (op)  {Operator};
+\node[box, right=2cm of op]  (ui)     {Streamlit UI};
+\node[box, right=2cm of ui]  (feat3)  {Feature\\Engine};
+\node[box, right=2cm of feat3] (ml)   {ML Model};
+\node[box, right=2cm of ml]  (gemini3){Gemini\\API};
+
+\node[box, below=2cm of $(ui)!0.5!(ml)$] (cache) {Result\\Cache};
+
+\draw[arrow] (op)     -- node[label,above]{1. Input}   (ui);
+\draw[arrow] (ui)     -- node[label,above]{2. Features}(feat3);
+\draw[arrow] (feat3)  -- node[label,above]{3. Predict} (ml);
+\draw[arrow] (ml)     -- node[label,above]{4. Result}  (gemini3);
+\draw[arrow] (gemini3)-- ++(0,-1.8) -| node[label,near start,below]{5. Store} (cache);
+\draw[arrow] (cache)  -| node[label,near end,below]{6. Render} (ui);
+\draw[arrow] (ui)     -- node[label,right]{7. Display} (op);
+
+\end{tikzpicture}
+}
+\caption{Data Flow Pattern}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{Input Parameters and Feature Engineering}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Input Parameters}
+
+The platform accepts seven operating parameters as direct sensor readings from the
+distillation column. Table~\ref{tab:inputparams} describes each parameter, its
+physical interpretation, and its typical operating range.
+
+\begin{table}[H]
+\centering
+\caption{Input Parameters Description}
+\label{tab:inputparams}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|C{1.5cm}|L{2.5cm}|L{4.5cm}|C{2.5cm}|L{3cm}|}
+\hline
+\thead{Symbol} & \thead{Parameter} & \thead{Physical Meaning} & \thead{Typical Range} & \thead{Unit} \\
+\hline
+P   & Pressure         & Column operating pressure; controls VLE equilibrium       & 0.5 -- 3.0 & atm \\
+T1  & Temperature      & Top-stage temperature; proxy for condenser duty           & 50 -- 90   & \textdegree C \\
+L   & Reflux Flow      & Internal liquid return rate; controls separation quality  & 500 -- 1200 & kmol/hr \\
+V   & Vapour Flow      & Rising vapour rate; drives mass-transfer                  & 600 -- 1500 & kmol/hr \\
+D   & Distillate Flow  & Distillate product withdrawal rate                        & 50 -- 300  & kmol/hr \\
+B   & Bottoms Flow     & Bottoms product withdrawal rate                           & 100 -- 400 & kmol/hr \\
+F   & Feed Flow        & Fresh feed entering the column                            & 200 -- 600 & kmol/hr \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Feature Engineering}
+\label{fig:featureeng}
+
+Physics-informed feature engineering is the cornerstone of the platform's accuracy.
+Rather than feeding raw sensor readings directly to the ML model, the feature engine
+derives 21 domain-meaningful features that encode thermodynamic and mass-balance
+relationships. This approach injects prior chemical-engineering knowledge into the
+model, dramatically reducing the training data requirement while improving
+generalisation to unseen operating conditions.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  box/.style={rectangle, rounded corners=3pt, minimum width=4cm,
+              minimum height=0.75cm, align=center, font=\small,
+              draw, thick},
+  raw/.style={box, fill=blue!12, draw=inputcol, text=inputcol},
+  der/.style={box, fill=orange!12, draw=enginecol, text=enginecol, minimum width=5.5cm},
+  arrow/.style={-Stealth, thick},
+]
+%% raw inputs
+\node[raw] (r1) at (0,0)     {P, T1, L, V, D, B, F};
+\node[font=\small\bfseries\color{inputcol}, above=0.15cm of r1] {7 Raw Sensor Inputs};
+
+%% categories
+\node[der] (d1) at (7, 1.6)  {Derived Ratios (6 features)};
+\node[der] (d2) at (7, 0.5)  {Interaction Terms (3 features)};
+\node[der] (d3) at (7,-0.6)  {Efficiency Metrics (3 features)};
+\node[der] (d4) at (7,-1.7)  {Thermo Approximations (2 features)};
+\node[der] (d5) at (7,-2.8)  {Original Inputs (7 features)};
+
+%% arrows
+\draw[arrow, inputcol] (r1.east) -- ++(1.2,0) |- (d1.west);
+\draw[arrow, inputcol] (r1.east) -- ++(1.2,0) |- (d2.west);
+\draw[arrow, inputcol] (r1.east) -- ++(1.2,0) |- (d3.west);
+\draw[arrow, inputcol] (r1.east) -- ++(1.2,0) |- (d4.west);
+\draw[arrow, inputcol] (r1.east) -- ++(1.2,0) |- (d5.west);
+
+%% output node
+\node[box, fill=green!12, draw=mlcol, text=mlcol, right=1.5cm of d3, text width=3.5cm] (out)
+     {21 Features\\$\rightarrow$ StandardScaler\\$\rightarrow$ ML Model};
+
+\draw[arrow, mlcol] (d1.east) -- ++(0.8,0) |- (out.north west);
+\draw[arrow, mlcol] (d2.east) -- (out.west);
+\draw[arrow, mlcol] (d3.east) -- (out.west);
+\draw[arrow, mlcol] (d4.east) -- ++(0.8,0) |- (out.south west);
+\draw[arrow, mlcol] (d5.east) -- ++(0.8,0) |- (out.south west);
+\end{tikzpicture}
+}
+\caption{Feature Engineering Process from 7 Inputs to 21 Physics-Derived Features}
+\end{figure}
+
+Table~\ref{tab:features} enumerates the complete 21-feature set.
+
+\begin{table}[H]
+\centering
+\caption{Engineered Feature Set (21 Features)}
+\label{tab:features}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|C{0.4cm}|L{4.2cm}|L{4.5cm}|L{5.3cm}|}
+\hline
+\thead{\#} & \thead{Feature Name} & \thead{Formula / Derivation} & \thead{Physical Significance} \\
+\hline
+1  & Reflux Ratio        & $L/V$              & Degree of internal liquid-vapour contact; primary separation driver \\
+2  & Reboiler Duty Ratio & $V/F$              & Fraction of feed vaporised; heat input indicator \\
+3  & Condenser Ratio     & $L/D$              & Ratio of reflux to distillate; purity vs.\ throughput trade-off \\
+4  & Feed Normalised     & $F/(D+B)$          & Material-balance consistency check \\
+5  & Distillate Fraction & $D/F$              & Product recovery fraction for distillate \\
+6  & Bottoms Fraction    & $B/F$              & Product recovery fraction for bottoms \\
+7  & Reflux--Temp Interaction  & $L \times T_1$     & Non-linear coupling of reflux and condenser temperature \\
+8  & Reboiler--Temp Interaction & $V \times T_1$    & Heat input modulated by temperature \\
+9  & Feed--Reflux Interaction   & $F \times L$      & Feed-induced liquid load effect \\
+10 & Column Load         & $(L+V)/(2F)$       & Overall hydraulic loading of the column \\
+11 & Separation Duty     & $L \times V / F$   & Combined driving force for separation \\
+12 & Column Efficiency   & $D / (L+V)$        & Ratio of product output to internal flows \\
+13 & T\_bottom Approx    & $T_1 + 20$         & Estimated bottom-stage temperature (first-order approximation) \\
+14 & Pressure–Temp Ratio & $P / T_1$          & Thermodynamic state variable \\
+15--21 & Original Inputs & P, T1, L, V, D, B, F & Raw sensor readings retained for direct influence \\
+\hline
+\end{tabularx}
+\end{table}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{Machine Learning Models and Performance}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Model Training Workflow}
+\label{fig:training}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=0.45cm,
+  step/.style={rectangle, rounded corners=3pt, minimum width=8cm, text width=7.5cm,
+               minimum height=0.75cm, align=center, font=\small,
+               draw=vitblue, fill=lightblue, thick},
+  arrow/.style={-Stealth, thick, vitblue},
+  lbl/.style={circle, draw=vitblue, fill=vitblue, text=white,
+              font=\bfseries\footnotesize, minimum size=0.5cm},
+]
+\foreach \txt/\idx in {
+  {Load dataset\_distill.csv (semicolon-delimited; 4000+ records)}/1,
+  {Unit Conversion: Temperatures T1--T14 from Kelvin to Celsius}/2,
+  {Data Cleaning: remove duplicates, nulls, outliers (1st--99th percentile)}/3,
+  {Feature Engineering: create 21 physics-derived features}/4,
+  {Dataset Balancing: undersample dominant mid-purity range (40\%)}/5,
+  {Train / Validation / Test Split: 60\% -- 20\% -- 20\%}/6,
+  {Scaling: StandardScaler fit on training data only}/7,
+  {Model Training: XGBoost (500 trees) and Random Forest (200 trees)}/8,
+  {5-Fold Cross-Validation on training set for both models}/9,
+  {Auto-Select best model by highest test R\textsuperscript{2}}/10,
+  {Residual Analysis: Predicted vs Actual, Q-Q Plot, Homoscedasticity}/11,
+  {Export Artifacts: model.pkl · scaler.pkl · features\_names.pkl}/12
+} {
+  \pgfmathtruncatemacro{\y}{-(\idx-1)*0.95}
+  \node[step] (s\idx) at (0,\y) {\txt};
+  \node[lbl] (l\idx) at (-5.0,\y) {\idx};
+  \ifnum\idx>1
+    \pgfmathtruncatemacro{\prev}{\idx-1}
+    \draw[arrow] (s\prev.south) -- (s\idx.north);
+  \fi
+}
+\end{tikzpicture}
+\caption{Model Training Workflow (12-Step Pipeline)}
+\end{figure}
+
+\section{Model Hyperparameters}
+
+\subsection{Random Forest Configuration}
+
+\begin{table}[H]
+\centering
+\caption{Model Hyperparameters --- Random Forest}
+\label{tab:rf_params}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.55\textwidth}{|L{4.5cm}|R{4cm}|}
+\hline
+\thead{Parameter} & \thead{Value} \\
+\hline
+\texttt{n\_estimators}     & 200 \\
+\texttt{max\_depth}        & 20 \\
+\texttt{min\_samples\_split} & 5 \\
+\texttt{random\_state}     & 42 \\
+\texttt{n\_jobs}           & $-1$ (all cores) \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{XGBoost Configuration}
+
+\begin{table}[H]
+\centering
+\caption{Model Hyperparameters --- XGBoost}
+\label{tab:xgb_params}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.55\textwidth}{|L{4.5cm}|R{4cm}|}
+\hline
+\thead{Parameter} & \thead{Value} \\
+\hline
+\texttt{n\_estimators}      & 500 \\
+\texttt{max\_depth}         & 6 \\
+\texttt{learning\_rate}     & 0.03 \\
+\texttt{subsample}          & 0.85 \\
+\texttt{colsample\_bytree}  & 0.85 \\
+\texttt{reg\_alpha}         & 0.1 \\
+\texttt{reg\_lambda}        & 1.0 \\
+\texttt{random\_state}      & 42 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Model Performance}
+
+Both models are evaluated on a held-out 20\% test set and a 5-fold cross-validation
+partition. The final deployed model is the one with the higher test R\textsuperscript{2}.
+Table~\ref{tab:metrics} summarises the key performance metrics.
+
+\begin{table}[H]
+\centering
+\caption{Model Performance Metrics}
+\label{tab:metrics}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{0.75\textwidth}{|L{5cm}|C{3cm}|C{3cm}|}
+\hline
+\thead{Metric} & \thead{Random Forest} & \thead{XGBoost} \\
+\hline
+R\textsuperscript{2} (Test Set)       & $> 0.98$ & $> 0.97$ \\
+RMSE (Test Set)                        & 0.0155   & 0.0178   \\
+MAE  (Test Set)                        & 0.0122   & 0.0141   \\
+Prediction Error Margin                & $\pm$1.55\% & $\pm$1.78\% \\
+5-Fold CV Mean R\textsuperscript{2}    & 0.976    & 0.971    \\
+Inference Latency                      & $< 50$\,ms & $< 50$\,ms \\
+\hline
+\end{tabularx}
+\end{table}
+
+The R\textsuperscript{2}~$> 0.98$ result signifies that the model explains more than
+98\% of the variance in ethanol purity, a highly competitive figure given the
+inherently noisy nature of industrial sensor data. The error margin of $\pm$1.55\%
+is well within the tolerance required for most commercial-grade process control
+applications.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{AI Intelligence Layer}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Google Gemini Integration}
+
+Google Gemini Pro serves as the reasoning and communication backbone of the platform.
+After each ML inference, the predicted purity value, the top SHAP contributors, and
+relevant operating context are assembled into a structured prompt that is dispatched
+to the Gemini Pro API. Gemini responds with a plain-English diagnostic report covering
+four areas: what the prediction means for product quality; which parameters are driving
+the result and why; whether any action is recommended; and an energy-efficiency
+commentary. This report is then rendered directly on the Streamlit dashboard alongside
+the numerical prediction.
+
+The conversational chat endpoint uses Gemini's Chat API with full conversation
+history, enabling follow-up questions such as \textit{``Given the last prediction,
+what reflux setting would push purity above 90\%?''} The platform maintains a rolling
+message buffer ensuring context continuity across multi-turn interactions.
+
+\section{SHAP Explainability Engine}
+\label{fig:shap}
+
+SHAP (SHapley Additive exPlanations) decomposes each prediction into additive
+contributions from individual features, providing a mathematically rigorous answer to
+the question: \textit{``Why did the model output this value?''} The platform computes
+SHAP values using a TreeExplainer — the computationally efficient variant for
+ensemble tree models — for every prediction request.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  box/.style={rectangle, rounded corners=3pt, minimum width=4.5cm, text width=4cm,
+              minimum height=0.8cm, align=center, font=\small,
+              draw=aicol, fill=violet!8, thick},
+  arrow/.style={-Stealth, thick, aicol},
+]
+\node[box] (pred) {ML Prediction Result};
+\node[box, below=of pred] (tree) {TreeExplainer instantiation\\(model + background dataset)};
+\node[box, below=of tree] (shap3) {Compute SHAP values\\for current feature vector};
+\node[box, below=of shap3] (rank) {Rank features by\\absolute SHAP magnitude};
+\node[box, below left=0.8cm and 1cm of rank] (waterfall) {Waterfall Chart\\(per-prediction)};
+\node[box, below right=0.8cm and 1cm of rank] (summary)  {Summary / Force Plot\\(global trends)};
+\node[box, below=2cm of rank] (gemini4) {Gemini interprets top 5\\SHAP features in plain English};
+
+\draw[arrow] (pred)     -- (tree);
+\draw[arrow] (tree)     -- (shap3);
+\draw[arrow] (shap3)    -- (rank);
+\draw[arrow] (rank)     -| (waterfall);
+\draw[arrow] (rank)     -| (summary);
+\draw[arrow] (waterfall)|- (gemini4);
+\draw[arrow] (summary)  |- (gemini4);
+\end{tikzpicture}
+}
+\caption{SHAP Explainability Computation Flow}
+\end{figure}
+
+Table~\ref{tab:shap} shows a representative attribution for a typical high-purity
+operating point.
+
+\begin{table}[H]
+\centering
+\caption{SHAP Feature Attribution Summary (Representative Prediction)}
+\label{tab:shap}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.72\textwidth}{|C{0.5cm}|L{5cm}|R{3.5cm}|R{3.5cm}|}
+\hline
+\thead{\#} & \thead{Feature} & \thead{SHAP Value} & \thead{Direction} \\
+\hline
+1 & Reflux Ratio ($L/V$)           & $+0.042$ & Increases purity \\
+2 & Reboiler Duty Ratio ($V/F$)    & $+0.031$ & Increases purity \\
+3 & Reflux--Temp Interaction       & $+0.018$ & Increases purity \\
+4 & Pressure (P)                   & $-0.011$ & Decreases purity \\
+5 & Bottoms Fraction ($B/F$)       & $-0.007$ & Decreases purity \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Anomaly Detection Architecture}
+\label{fig:anomaly}
+
+The anomaly detection framework combines three independent detection layers. When any
+layer flags an anomaly, a smart alert is generated and Gemini is invoked to produce
+a plain-English explanation and recommended corrective action.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  layer3/.style={rectangle, rounded corners=3pt, minimum width=10cm, text width=9.5cm,
+                minimum height=0.85cm, align=center, font=\small\bfseries,
+                draw=outputcol, fill=red!8, thick},
+  det/.style={rectangle, rounded corners=3pt, minimum width=3cm,
+              minimum height=0.75cm, align=center, font=\small,
+              draw=midgray, fill=white, thick},
+  arrow/.style={-Stealth, thick},
+]
+\node[layer3] (l1) at (0,0)    {Layer 1 --- Statistical Bounds: compare each input against training percentile limits};
+\node[layer3] (l2) at (0,-1.3) {Layer 2 --- Isolation Forest: unsupervised anomaly scorer (contamination=0.05)};
+\node[layer3] (l3) at (0,-2.6) {Layer 3 --- Physics Rules: mass-balance check $|D + B - F| / F < 5\%$};
+\node[layer3] (l4) at (0,-3.9) {Layer 4 --- Temporal Drift: slope of last-N predictions for trend detection};
+
+\node[det] (agg)  at (0,-5.2)  {Aggregate: any layer flags $\Rightarrow$ anomaly};
+\node[det] (alert2) at (-3.5,-6.5) {Smart Alert (in-app)};
+\node[det] (gem5)   at (0,-6.5)    {Gemini explanation};
+\node[det] (rem)    at (3.5,-6.5)  {Remediation advice};
+
+\draw[-Stealth, thick] (l4) -- (agg);
+\draw[-Stealth, thick] (agg) -| (alert2);
+\draw[-Stealth, thick] (agg) -- (gem5);
+\draw[-Stealth, thick] (agg) -| (rem);
+\end{tikzpicture}
+}
+\caption{Multi-Layer Anomaly Detection Architecture}
+\end{figure}
+
+Table~\ref{tab:anomaly} summarises the four detection layers, the technique used, and
+the type of anomaly each layer is designed to catch.
+
+\begin{table}[H]
+\centering
+\caption{Anomaly Detection Layers}
+\label{tab:anomaly}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|C{0.5cm}|L{3.5cm}|L{3cm}|L{7cm}|}
+\hline
+\thead{\#} & \thead{Layer} & \thead{Technique} & \thead{Anomaly Type Detected} \\
+\hline
+1 & Statistical Bounds  & Percentile limits     & Input values outside the 1st--99th percentile of training data (sensor malfunction or extreme operating regime) \\
+2 & Isolation Forest    & Unsupervised ML       & Multivariate outliers — combinations of parameters that are individually plausible but collectively anomalous \\
+3 & Physics Rules       & Mass-balance check    & Violations of $D + B \approx F$ within 5\% — indicating flow-meter error or column flooding \\
+4 & Temporal Drift      & Slope detection       & Gradual monotonic drift in sequential predictions signalling membrane fouling, packing degradation, or equipment wear \\
+\hline
+\end{tabularx}
+\end{table}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{Application Workflows}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Prediction and Optimisation Workflow}
+\label{fig:optflow}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  proc2/.style={rectangle, rounded corners=3pt, minimum width=5cm, text width=4.5cm,
+               minimum height=0.8cm, align=center, font=\small,
+               draw=mlcol, fill=green!8, thick},
+  dec2/.style={diamond, aspect=2.8, minimum width=5cm,
+               align=center, font=\footnotesize,
+               draw=vitgold, fill=yellow!12, thick},
+  arrow2/.style={-Stealth, thick, mlcol},
+]
+\node[proc2] (s1) {Engineer inputs 7 operating parameters};
+\node[proc2, below=of s1] (s2) {Feature engine generates 21 features};
+\node[proc2, below=of s2] (s3) {ML model predicts ethanol mole fraction};
+\node[dec2,  below=0.6cm of s3] (q1) {Purity $\geq$ target?};
+
+\node[proc2, right=2.5cm of q1, text width=4cm] (opt)
+     {Optimisation Advisor:\\suggest parameter changes};
+\node[proc2, below=0.7cm of q1] (s4) {SHAP + Gemini diagnostic report};
+\node[proc2, below=of s4] (s5) {Energy efficiency analysis};
+\node[proc2, below=of s5] (s6) {What-if simulator available for virtual testing};
+\node[proc2, below=of s6] (s7) {Render results on dashboard};
+
+\draw[arrow2] (s1)   -- (s2);
+\draw[arrow2] (s2)   -- (s3);
+\draw[arrow2] (s3)   -- (q1);
+\draw[arrow2] (q1)   -- node[right,font=\footnotesize]{Yes}  (s4);
+\draw[arrow2] (q1)   -- node[above,font=\footnotesize]{No}   (opt);
+\draw[arrow2] (opt)  |- (s4);
+\draw[arrow2] (s4)   -- (s5);
+\draw[arrow2] (s5)   -- (s6);
+\draw[arrow2] (s6)   -- (s7);
+\end{tikzpicture}
+}
+\caption{Prediction and Optimisation Workflow}
+\end{figure}
+
+\section{What-If Simulator}
+
+The what-if simulator allows engineers to test hypothetical parameter changes without
+touching the actual column. The operator adjusts any of the seven input sliders in the
+``Simulation'' panel, and the platform immediately reruns the inference pipeline on the
+modified feature vector. The resulting purity change is compared against the baseline
+prediction, and Gemini Pro generates a commentary explaining which feature changes
+drove the delta. A sensitivity analysis heat-map shows the marginal impact of
+incrementally varying each parameter across its operating range.
+
+Representative output for an optimisation recommendation:
+\begin{infobox}
+\textbf{Optimisation Advisor:} To reach 90\% ethanol purity from the current 87.3\%,
+increase reflux flow L from 780 to 842~kmol/hr ($+$8\%). This change increases the
+reflux ratio from 1.30 to 1.40, placing the column in the higher-purity operating
+regime identified by the SHAP analysis. Expected purity gain: $+$3.2\%.
+Alternative: reduce vapour flow V by 5\% to save energy; purity drops approximately
+1\% to 86.3\%. Current column efficiency score: 8.4\,/\,10.
+\end{infobox}
+
+Table~\ref{tab:optim} lists representative optimisation recommendations for three
+common operating scenarios.
+
+\begin{table}[H]
+\centering
+\caption{Optimisation Recommendation Examples}
+\label{tab:optim}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\textwidth}{|L{4cm}|L{4cm}|L{6cm}|}
+\hline
+\thead{Scenario} & \thead{Recommended Action} & \thead{Expected Outcome} \\
+\hline
+Purity below 85\%    & Increase L by 10\% (780 $\to$ 858\,kmol/hr) & Purity rises to 87--89\%; reflux ratio increases from 1.30 to 1.43 \\
+Energy cost too high & Reduce V by 8\% while holding L constant & Energy savings of $\approx$8\%; purity drops $\approx$1.5\%, remains above spec \\
+Mass-balance anomaly & Check D and B flow meters; verify $D+B \approx F$ & Resolve sensor drift; prevents false predictions \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Conversational AI Chat Workflow}
+\label{fig:chatflow}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  box/.style={rectangle, rounded corners=3pt, minimum width=4.5cm,
+              minimum height=0.8cm, align=center, font=\small,
+              draw=aicol, fill=violet!8, thick},
+  arrow/.style={-Stealth, thick, aicol},
+]
+\node[box] (q)   {Operator types natural-language question};
+\node[box, below=of q]  (hist) {System assembles conversation history\\+ current prediction context};
+\node[box, below=of hist] (prompt) {Construct structured Gemini prompt:\\context + question + SHAP summary};
+\node[box, below=of prompt] (call) {Gemini Chat API call};
+\node[box, below=of call] (resp) {Parse Gemini response};
+\node[box, below=of resp] (disp) {Append to chat window \& store in history};
+
+\draw[arrow] (q)    -- (hist);
+\draw[arrow] (hist) -- (prompt);
+\draw[arrow] (prompt)-- (call);
+\draw[arrow] (call) -- (resp);
+\draw[arrow] (resp) -- (disp);
+
+%% loop-back arrow
+\draw[arrow] (disp.east) -- ++(1.2,0) |- node[right,font=\footnotesize]{Follow-up\\question} (hist.east);
+\end{tikzpicture}
+\caption{Conversational AI Chat Flow}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{Project Structure and Deployment}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Repository Structure}
+
+The project is organised as a single-repository Python application with clear
+separation between training artifacts, the Streamlit application, and the physics
+feature module:
+
+\begin{lstlisting}
+Distillation-Column-Prediction/
+|-- app.py                    # Streamlit dashboard entry-point
+|-- model_training_script.py  # Full training pipeline (Google Colab)
+|-- feature_engineering.py    # Physics-informed feature engine
+|-- anomaly_detection.py      # Multi-layer anomaly detection module
+|-- gemini_client.py          # Google Gemini API wrapper
+|-- model.pkl                 # Serialised ML model (auto-selected)
+|-- scaler.pkl                # Fitted StandardScaler
+|-- features_names.pkl        # Ordered list of 21 feature names
+|-- dataset_distill.csv       # Raw training dataset (4000+ records)
+|-- feature_importance.png    # Pre-computed SHAP summary plot
+|-- requirements.txt          # Python dependencies
+|-- .devcontainer/            # GitHub Codespaces configuration
+|-- LICENSE                   # MIT licence
+`-- README.md                 # Project documentation
+\end{lstlisting}
+
+\section{Quick Start}
+
+Deploying the platform locally requires Python 3.8 or later. After cloning the
+repository and installing dependencies with \texttt{pip install -r requirements.txt},
+the operator places a valid Google Gemini API key in a \texttt{.env} file under the
+key \texttt{GOOGLE\_API\_KEY}. The pre-trained model artifacts (\texttt{model.pkl},
+\texttt{scaler.pkl}, \texttt{features\_names.pkl}) must be present in the root
+directory, either downloaded from the repository or generated locally using
+\texttt{model\_training\_script.py}. The application is launched with
+\texttt{streamlit run app.py}, which opens the dashboard in the default browser at
+\texttt{localhost:8501}.
+
+For cloud-based development, the repository includes a \texttt{.devcontainer}
+configuration allowing one-click launch in GitHub Codespaces with all dependencies
+pre-installed.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\chapter{Future Roadmap}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\section{Strategic Vision}
+
+Distillation Column AI is designed as an evolving platform. The current version (v2.2)
+delivers a fully functional AI copilot for single-column ethanol purity prediction.
+The roadmap extends this foundation towards enterprise-grade process intelligence,
+supporting multiple columns, live DCS integration, and advanced time-series analytics.
+
+\begin{table}[H]
+\centering
+\caption{Development Roadmap}
+\label{tab:roadmap}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|L{3cm}|C{2cm}|L{9cm}|}
+\hline
+\thead{Version} & \thead{Status} & \thead{Scope and Features} \\
+\hline
+v1.0 --- ML Core          & Complete  & Physics-informed feature engineering; Random Forest + XGBoost; Streamlit dashboard \\
+v2.0 --- AI Intelligence  & Complete  & Gemini diagnostics; SHAP explainability; anomaly detection; smart alerts \\
+v2.1 --- AI Chat          & Complete  & Conversational AI copilot; natural-language Q\&A; context-aware multi-turn responses \\
+v2.2 --- Optimisation     & Complete  & What-if simulator; sensitivity analysis; target purity solver; energy efficiency advisor \\
+v3.0 --- Advanced Analytics & Planned & Time-series trend dashboards; automated shift handover reports; batch comparison \\
+v3.1 --- Multi-Column     & Planned   & Support for multiple distillation columns within a single unified dashboard \\
+v4.0 --- Edge Deployment  & Future    & Docker container; REST API; OPC-UA connector for live DCS/SCADA data feed \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Emerging Technology Integration}
+
+The v4.0 roadmap targets integration with plant-floor automation infrastructure via
+OPC-UA and Modbus connectors, transforming the platform from an offline analytical
+tool into a real-time process advisor. Potential extensions include fine-tuned Gemini
+prompts for domain-specific terminology, LIME as an alternative explainability method,
+and neural-network models for capturing non-stationary column dynamics over long
+time horizons.
+
+\section{Contribution Areas}
+
+Table~\ref{tab:contrib} documents open areas where community contributions would
+be most impactful.
+
+\begin{table}[H]
+\centering
+\caption{Contribution Areas}
+\label{tab:contrib}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|L{2.5cm}|L{11.5cm}|}
+\hline
+\thead{Area} & \thead{Suggested Contribution} \\
+\hline
+AI / LLM         & Fine-tune Gemini prompts for better diagnostic precision; implement GPT-4 as a fallback provider \\
+Explainability   & Add LIME as an alternative to SHAP; integrate counterfactual explanation generation \\
+Training Data    & Contribute additional real-plant distillation experiments or open-source datasets \\
+Models           & Explore neural networks, gradient boosting variants, or ensemble stacking approaches \\
+Analytics        & Build time-series dashboards for long-term column performance tracking and drift analysis \\
+UI               & Dark mode; mobile-responsive layout; integrated trend charts within the prediction panel \\
+Deployment       & Docker image; cloud deployment on AWS, GCP, or Azure; automated CI/CD pipeline \\
+Integration      & OPC-UA and Modbus connectors for live DCS/SCADA data ingestion \\
+\hline
+\end{tabularx}
+\end{table}
+
+%%─────────────────────────────────────────────────────────────────────────────
+%% BIBLIOGRAPHY
+%%─────────────────────────────────────────────────────────────────────────────
+\clearpage
+\begin{thebibliography}{99}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\bibitem{streamlit}
+Streamlit Inc. \textit{Streamlit Documentation}. \url{https://docs.streamlit.io/}
+
+\bibitem{gemini}
+Google DeepMind. \textit{Gemini API Documentation}. \url{https://ai.google.dev/}
+
+\bibitem{shap}
+S.~M.\ Lundberg and S.-I.\ Lee. A Unified Approach to Interpreting Model Predictions.
+\textit{Advances in Neural Information Processing Systems}, 30, 2017.
+\url{https://shap.readthedocs.io/}
+
+\bibitem{sklearn}
+F.~Pedregosa et~al. Scikit-learn: Machine Learning in Python.
+\textit{Journal of Machine Learning Research}, 12:2825--2830, 2011.
+
+\bibitem{xgboost}
+T.~Chen and C.~Guestrin. XGBoost: A Scalable Tree Boosting System.
+\textit{Proceedings of the 22nd ACM SIGKDD}, 2016.
+\url{https://xgboost.readthedocs.io/}
+
+\bibitem{pandas}
+The pandas development team. \textit{pandas: Powerful data analysis for Python}.
+\url{https://pandas.pydata.org/}
+
+\bibitem{isoforest}
+F.~T.\ Liu, K.~M.\ Ting, and Z.-H.\ Zhou. Isolation Forest.
+\textit{IEEE International Conference on Data Mining}, 2008.
+
+\bibitem{plotly}
+Plotly Technologies Inc. \textit{Collaborative data science}. 2015.
+\url{https://plotly.com}
+
+\end{thebibliography}
+
+\end{document}
